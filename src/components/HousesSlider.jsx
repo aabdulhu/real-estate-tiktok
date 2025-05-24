@@ -107,6 +107,7 @@ export default function HousesSlider() {
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-black text-white">
       {/* Tab Bar */}
+      {!selectedHouse && (
       <div className="absolute top-0 left-0 right-0 z-50 flex justify-center gap-6 py-4 bg-black bg-opacity-30 text-white text-lg font-semibold">
         <button
           className={view === "feed" ? "underline" : "opacity-60"}
@@ -127,7 +128,7 @@ export default function HousesSlider() {
           Map
         </button>
       </div>
-
+)}
 {/* Filter Overlay */}
 {showFilter && (
   <div
@@ -252,16 +253,21 @@ export default function HousesSlider() {
       {selectedHouse ? (
         <div className="w-full h-full bg-black text-white p-6 overflow-y-auto flex flex-col">
           <button
-            className="self-start mb-4 px-4 py-2 bg-gray-800 rounded hover:bg-gray-700"
-            onClick={() => setSelectedHouse(null)}
+          className={view === "feed" ? "underline" : "opacity-60"}
+            // className="self-start mb-4 px-4 py-2 bg-gray-800 rounded hover:bg-gray-700"
+            onClick={() => {
+              setSelectedHouse(null);
+              setView("feed"); 
+            }}
+            
           >
             Back
           </button>
-
-          <h2 className="text-3xl font-bold mb-2">
+            <br></br>
+          <h2 className="text-xl font-bold mb-2">
             {selectedHouse.street}, {selectedHouse.city}, {selectedHouse.province} {selectedHouse.postalCode}
           </h2>
-          <p className="mb-4 italic">{selectedHouse.description}</p>
+          
 
           <div className="mb-6 overflow-x-auto whitespace-nowrap space-x-4 flex scrollbar-thin scrollbar-thumb-gray-700">
             {selectedHouse.images.map((img, idx) => (
@@ -273,6 +279,8 @@ export default function HousesSlider() {
               />
             ))}
           </div>
+
+<p className="mb-4 italic">{selectedHouse.description}</p>
 
           <div className="grid grid-cols-2 gap-4 mb-6">
             <div><strong>Bedrooms:</strong> {selectedHouse.bedrooms}</div>
@@ -351,22 +359,22 @@ export default function HousesSlider() {
                   <div className="text-xl font-bold">{house.price}</div>
                   <div className="opacity-80">{house.type}</div>
                 </div>
-                <div className="flex gap-4 opacity-90">
-                  <div className="flex items-center gap-1 text-sm">
-                    <FaHeart /> {house.realtor.likes}
-                  </div>
-                  <div className="flex items-center gap-1 text-sm">
-                    <FaComment /> {house.realtor.comments}
-                  </div>
-                </div>
+<div className="flex flex-col items-center gap-4 opacity-90 text-3xl">
+  <div className="flex items-center gap-2">
+    <FaHeart /> <span className="text-base">{house.realtor.likes}</span>
+  </div>
+  <div className="flex items-center gap-2">
+    <FaComment /> <span className="text-base">{house.realtor.comments}</span>
+  </div>
+</div>
               </div>
 
-              <div className="absolute left-5 bottom-24 text-white max-w-xs bg-black bg-opacity-30 rounded p-3">
+              {/* <div className="absolute left-5 bottom-24 text-white max-w-xs bg-black bg-opacity-30 rounded p-3">
                 <div className="font-bold text-lg">
                   {house.street}, {house.city}
                 </div>
                 <div className="text-sm opacity-80">{house.description}</div>
-              </div>
+              </div> */}
             </div>
           ))}
         </div>
