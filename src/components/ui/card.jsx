@@ -1,9 +1,11 @@
 // src/components/ui/card.jsx
+import React from 'react';
 
-export function Card({ children }) {
+export function Card(props) {
   return (
-    <div className="rounded-2xl shadow p-4 bg-white">
-      {children}
+    <div className="card">
+      {/* Your card UI */}
+      {props.children}
     </div>
   );
 }
