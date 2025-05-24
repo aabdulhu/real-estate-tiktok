@@ -9,10 +9,18 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Custom Tailwind utility classes */
+.scroll-container {
+  @apply h-screen overflow-y-scroll snap-y snap-mandatory;
+}
+
+.card {
+  @apply h-screen w-full snap-start;
 }

@@ -10,14 +10,47 @@ const mockListings = [
     image: "/house1.jpg",
     title: "Modern 3-Bedroom Home",
     description: "Located in Richmond Hill. Close to schools and parks.",
-    realtor: "Jane Doe - RE/MAX"
+    realtor: {
+      name: "Jane One",
+      photo: "/realtors/realtor1.jpg",
+      likes: 123,
+      comments: 45,
+    }
   },
   {
     id: 2,
     image: "/house2.jpg",
     title: "Luxury Bungalow",
     description: "Spacious backyard and open kitchen plan.",
-    realtor: "John Smith - Century 21"
+    realtor: {
+      name: "Jane Two",
+      photo: "/realtors/realtor2.jpg",
+      likes: 123,
+      comments: 45,
+    }
+  },  {
+    id: 3,
+    image: "/house3.jpg",
+    title: "Modern 3-Bedroom Home",
+    description: "Located in Richmond Hill. Close to schools and parks.",
+    realtor: {
+      name: "Jane Three",
+      photo: "/realtors/realtor1.jpg",
+      likes: 123,
+      comments: 45,
+    }
+  },
+  {
+    id: 4,
+    image: "/house4.jpg",
+    title: "Luxury Bungalow",
+    description: "Spacious backyard and open kitchen plan.",
+    realtor: {
+      name: "Jane Four",
+      photo: "/realtors/realtor2.jpg",
+      likes: 123,
+      comments: 45,
+    }
   }
 ];
 
