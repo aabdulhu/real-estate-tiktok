@@ -99,36 +99,62 @@ export default function HousesSlider() {
   const [selectedHouse, setSelectedHouse] = useState(null);
   const [view, setView] = useState("feed");
   const [showFilter, setShowFilter] = useState(false);
+  const [buyOrRent, setBuyOrRent] = useState("Buy"); // <-- Toggle state
 
   const selectHouse = (house) => {
     setSelectedHouse(house);
   };
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden bg-black text-white">
-      {/* Tab Bar */}
+     <div className="relative h-screen w-screen overflow-hidden bg-black text-white">
+      {/* Tab Bar + Toggle */}
       {!selectedHouse && (
-      <div className="absolute top-0 left-0 right-0 z-50 flex justify-center gap-6 py-4 bg-black bg-opacity-30 text-white text-lg font-semibold">
-        <button
-          className={view === "feed" ? "underline" : "opacity-60"}
-          onClick={() => {
-            setView("feed");
-            setSelectedHouse(null);
-          }}
-        >
-          For You
-        </button>
-        <button
-          className={view === "map" ? "underline" : "opacity-60"}
-          onClick={() => {
-            setView("map");
-            setSelectedHouse(null);
-          }}
-        >
-          Map
-        </button>
-      </div>
-)}
+        <div className="absolute top-0 left-0 right-0 z-50 flex flex-col items-center gap-2 py-4 bg-black bg-opacity-30 text-white text-lg font-semibold">
+          {/* Tab Bar */}
+          <div className="flex justify-center gap-6">
+            <button
+              className={view === "feed" ? "underline" : "opacity-60"}
+              onClick={() => {
+                setView("feed");
+                setSelectedHouse(null);
+              }}
+            >
+              For You
+            </button>
+            <button
+              className={view === "map" ? "underline" : "opacity-60"}
+              onClick={() => {
+                setView("map");
+                setSelectedHouse(null);
+              }}
+            >
+              Map
+            </button>
+          </div>
+
+          {/* Toggle Buy / Rent */}
+          <div className="flex items-center bg-white bg-opacity-10 rounded-full px-1 py-1 mt-1 backdrop-blur-sm">
+            <button
+              className={`px-4 py-1 rounded-full text-sm font-medium transition ${
+                buyOrRent === "Buy" ? "bg-white text-black" : "text-white"
+              }`}
+              onClick={() => setBuyOrRent("Buy")}
+            >
+              Buy
+            </button>
+            <button
+              className={`px-4 py-1 rounded-full text-sm font-medium transition ${
+                buyOrRent === "Rent" ? "bg-white text-black" : "text-white"
+              }`}
+              onClick={() => setBuyOrRent("Rent")}
+            >
+              Rent
+            </button>
+          </div>
+        </div>
+      )}
+
+
 {/* Filter Overlay */}
 {showFilter && (
   <div
