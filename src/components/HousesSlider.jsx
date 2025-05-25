@@ -3,6 +3,8 @@ import { FaHeart, FaComment } from "react-icons/fa";
 import { FiSliders } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import MapView from "./MapView";
+import RealtorView from "./RealtorView";
+import { Link } from "react-router-dom";
 
 const houses = [
   {
@@ -13,7 +15,7 @@ const houses = [
     city: "Richmond Hill",
     province: "ON",
     postalCode: "L4C 1A1",
-    description: "A modern 3-bedroom home with natural light and smart layout.",
+    description: "Bright and spacious 4-bedroom home featuring an open-concept kitchen, hardwood floors, and a finished basement. Located on a quiet cul-de-sac near top-rated schools and parks.",
     bedrooms: 3,
     bathrooms: 2,
     area: "2,100 sqft",
@@ -22,6 +24,9 @@ const houses = [
     listingDate: "2025-05-01",
     realtor: {
       name: "Jane One",
+      phone: "647-898-1224",
+      company: "HomeRealty Inc.",
+      city: "Richmond Hill",
       photo: "/realtors/realtor1.jpg",
       likes: 123,
       comments: 45,
@@ -35,7 +40,7 @@ const houses = [
     city: "Mississauga",
     province: "ON",
     postalCode: "L4C 1A1",
-    description: "A modern 3-bedroom home with natural light and smart layout.",
+    description: "Charming 2-bedroom bungalow with updated kitchen, large backyard, and detached garage. Perfect for first-time buyers or downsizers seeking one-level living in a friendly neighborhood.",
     bedrooms: 2,
     bathrooms: 2,
     area: "2,200 sqft",
@@ -44,6 +49,9 @@ const houses = [
     listingDate: "2025-05-03",
     realtor: {
       name: "Jane Two",
+      phone: "647-898-1224",
+      company: "HomeRealty Inc.",
+      city: "Richmond Hill",
       photo: "/realtors/realtor2.jpg",
       likes: 87,
       comments: 12,
@@ -57,7 +65,7 @@ const houses = [
     city: "Oakville",
     province: "ON",
     postalCode: "L4C 1A1",
-    description: "A modern 3-bedroom home with natural light and smart layout.",
+    description: "Stylish 3-bedroom end-unit townhome with upgraded finishes, quartz countertops, and private rooftop terrace. Close to transit, shopping, and downtown amenities.",
     bedrooms: 4,
     bathrooms: 2,
     area: "2,300 sqft",
@@ -66,6 +74,9 @@ const houses = [
     listingDate: "2025-05-03",
     realtor: {
       name: "Jane Three",
+      phone: "647-898-1224",
+      company: "HomeRealty Inc.",
+      city: "Richmond Hill",
       photo: "/realtors/realtor1.jpg",
       likes: 204,
       comments: 34,
@@ -79,7 +90,7 @@ const houses = [
     city: "Toronto",
     province: "ON",
     postalCode: "L4C 1A1",
-    description: "A modern 3-bedroom home with natural light and smart layout.",
+    description: "Peaceful 5-acre property with a 3-bedroom farmhouse, wraparound porch, and barn. Ideal for hobby farming or enjoying nature just minutes from town.",
     bedrooms: 3,
     bathrooms: 3,
     area: "2,900 sqft",
@@ -88,6 +99,9 @@ const houses = [
     listingDate: "2025-05-04",
     realtor: {
       name: "Jane Four",
+      phone: "647-898-1224",
+      company: "HomeRealty Inc.",
+      city: "Richmond Hill",
       photo: "/realtors/realtor2.jpg",
       likes: 98,
       comments: 20,
@@ -104,6 +118,7 @@ export default function HousesSlider() {
   const selectHouse = (house) => {
     setSelectedHouse(house);
   };
+
 
   return (
      <div className="relative h-screen w-screen overflow-hidden bg-black text-white">
@@ -133,6 +148,7 @@ export default function HousesSlider() {
           </div>
 
           {/* Toggle Buy / Rent */}
+          {view !== "map" && (
           <div className="flex items-center bg-white bg-opacity-10 rounded-full px-1 py-1 mt-1 backdrop-blur-sm">
             <button
               className={`px-4 py-1 rounded-full text-sm font-medium transition ${
@@ -151,6 +167,7 @@ export default function HousesSlider() {
               Rent
             </button>
           </div>
+          )}
         </div>
       )}
 
@@ -278,23 +295,10 @@ export default function HousesSlider() {
       {/* Detail View */}
       {selectedHouse ? (
         <div className="w-full h-full bg-black text-white p-6 overflow-y-auto flex flex-col">
-          <button
-          className={view === "feed" ? "underline" : "opacity-60"}
-            // className="self-start mb-4 px-4 py-2 bg-gray-800 rounded hover:bg-gray-700"
-            onClick={() => {
-              setSelectedHouse(null);
-              setView("feed"); 
-            }}
-            
-          >
-            Back
-          </button>
-            <br></br>
           <h2 className="text-xl font-bold mb-2">
             {selectedHouse.street}, {selectedHouse.city}, {selectedHouse.province} {selectedHouse.postalCode}
           </h2>
-          
-
+        
           <div className="mb-6 overflow-x-auto whitespace-nowrap space-x-4 flex scrollbar-thin scrollbar-thumb-gray-700">
             {selectedHouse.images.map((img, idx) => (
               <img
@@ -314,17 +318,22 @@ export default function HousesSlider() {
             <div><strong>Area:</strong> {selectedHouse.area}</div>
             <div><strong>Type:</strong> {selectedHouse.type}</div>
             <div><strong>Price:</strong> {selectedHouse.price}</div>
-            <div><strong>Listed on:</strong> {selectedHouse.listingDate}</div>
+            <div><strong>Listed:</strong> {selectedHouse.listingDate}</div>
           </div>
 
           <div className="flex items-center gap-4 border-t border-gray-700 pt-4">
-            <img
-              src={selectedHouse.realtor.photo}
-              alt={selectedHouse.realtor.name}
-              className="w-16 h-16 rounded-full border-2 border-white"
-            />
-            <div>
-              <h3 className="text-xl font-semibold">{selectedHouse.realtor.name}</h3>
+                <Link
+                to={`/realtor/${selectedHouse.id}`}
+                state={{ realtor: selectedHouse.realtor }}
+                >
+                <img
+                    src={selectedHouse.realtor.photo}
+                    alt={selectedHouse.realtor.name}
+                    className="w-10 h-10 rounded-full object-cover cursor-pointer"
+                />
+                </Link>
+                <div>
+              <h3 className="text-2xl font-semibold">{selectedHouse.realtor.name}</h3>
               <div className="flex gap-4 mt-1">
                 <div className="flex items-center gap-1">
                   <FaHeart /> <span>{selectedHouse.realtor.likes}</span>
@@ -335,7 +344,20 @@ export default function HousesSlider() {
               </div>
             </div>
           </div>
+          <br></br><br></br>
+                    <button
+          className={view === "feed" ? "text-white bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded" : "opacity-60"}
+            // className="self-start mb-4 px-4 py-2 bg-gray-800 rounded hover:bg-gray-700"
+            onClick={() => {
+              setSelectedHouse(null);
+              setView("feed"); 
+            }}
+            
+          >
+            ← Back to Feed
+          </button>
         </div>
+        
       ) : view === "map" ? (
         <div className="h-full w-full">
           <MapView />
@@ -376,23 +398,28 @@ export default function HousesSlider() {
                   <FiSliders size={28} />
                 </button>
 
+                <Link
+                to={`/realtor/${house.id}`}
+                state={{ realtor: house.realtor }}
+                >
                 <img
-                  src={house.realtor.photo}
-                  alt={house.realtor.name}
-                  className="w-12 h-12 rounded-full border-2 border-white"
+                    src={house.realtor.photo}
+                    alt={house.realtor.name}
+                    className="w-10 h-10 rounded-full object-cover cursor-pointer"
                 />
+                </Link>
                 <div className="text-center">
-                  <div className="text-xl font-bold">{house.price}</div>
+                  <div className="text-l font-bold">{house.price}</div>
                   <div className="opacity-80">{house.type}</div>
                 </div>
-<div className="flex flex-col items-center gap-4 opacity-90 text-3xl">
-  <div className="flex items-center gap-2">
-    <FaHeart /> <span className="text-base">{house.realtor.likes}</span>
-  </div>
-  <div className="flex items-center gap-2">
-    <FaComment /> <span className="text-base">{house.realtor.comments}</span>
-  </div>
-</div>
+                    <div className="flex flex-col items-center gap-4 opacity-90 text-3xl">
+                    <div className="flex items-center gap-2">
+                        <FaHeart /> <span className="text-base">{house.realtor.likes}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <FaComment /> <span className="text-base">{house.realtor.comments}</span>
+                    </div>
+                    </div>
               </div>
 
               {/* <div className="absolute left-5 bottom-24 text-white max-w-xs bg-black bg-opacity-30 rounded p-3">
