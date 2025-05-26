@@ -117,7 +117,9 @@ export default function HousesSlider() {
   const [view, setView] = useState("feed");
   const [showFilter, setShowFilter] = useState(false);
   const [buyOrRent, setBuyOrRent] = useState("Buy"); // <-- Toggle state
-const sliderRef = useRef(null);
+    const sliderRef = useRef(null);
+  const [popupImage, setPopupImage] = useState(null);
+
 
   const selectHouse = (house) => {
     setSelectedHouse(house);
@@ -306,16 +308,6 @@ const sliderRef = useRef(null);
             {selectedHouse.street}, {selectedHouse.city}, {selectedHouse.province} {selectedHouse.postalCode}
           </h2>
         
-          {/* <div className="mb-6 overflow-x-auto whitespace-nowrap space-x-4 flex scrollbar-thin scrollbar-thumb-gray-700">
-            {selectedHouse.images.map((img, idx) => (
-              <img
-                key={idx}
-                src={img}
-                alt={`House image ${idx + 1}`}
-                className="h-[100] w-auto rounded inline-block"
-              />
-            ))}
-          </div> */}
           <div className="relative mb-6">
   {/* Left Arrow */}
   <button
@@ -327,20 +319,35 @@ const sliderRef = useRef(null);
     <ChevronLeft className="text-white" />
   </button>
 
-  {/* Image Scroll Container */}
-  <div
-    ref={sliderRef}
-    className="overflow-x-auto whitespace-nowrap space-x-4 flex scrollbar-thin scrollbar-thumb-gray-700 px-8"
-  >
-    {selectedHouse.images.map((img, idx) => (
-      <img
-        key={idx}
-        src={img}
-        alt={`House image ${idx + 1}`}
-        className="h-[100px] w-auto rounded inline-block"
-      />
-    ))}
-  </div>
+{/* Image Scroll Container */}
+      <div
+        ref={sliderRef}
+        className="overflow-x-auto whitespace-nowrap space-x-4 flex scrollbar-thin scrollbar-thumb-gray-700 px-8"
+      >
+        {selectedHouse.images.map((img, idx) => (
+          <img
+            key={idx}
+            src={img}
+            alt={`House image ${idx + 1}`}
+            className="h-[100px] w-auto rounded inline-block cursor-pointer hover:opacity-80 transition"
+            onClick={() => setPopupImage(img)}
+          />
+        ))}
+      </div>
+
+      {/* Popup Overlay */}
+      {popupImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80"
+          onClick={() => setPopupImage(null)}
+        >
+          <img
+            src={popupImage}
+            alt="Large preview"
+            className="max-h-[80vh] max-w-[90vw] rounded-lg shadow-lg"
+          />
+        </div>
+      )}
 
   {/* Right Arrow */}
   <button
@@ -378,12 +385,13 @@ const sliderRef = useRef(null);
                 <div>
               <h3 className="text-2xl font-semibold">{selectedHouse.realtor.name}</h3>
               <div className="flex gap-4 mt-1">
-                <div className="flex items-center gap-1">
-                  <FaHeart /> <span>{selectedHouse.realtor.likes}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <FaComment /> <span>{selectedHouse.realtor.comments}</span>
-                </div>
+<div className="flex items-center gap-1 text-white font-semibold">
+  <FaHeart className="text-white text-lg" /> <span>{selectedHouse.realtor.likes}</span>
+</div>
+<div className="flex items-center gap-1 text-white font-semibold">
+  <FaComment className="text-white text-lg" /> <span>{selectedHouse.realtor.comments}</span>
+</div>
+
               </div>
             </div>
           </div>
@@ -455,16 +463,17 @@ const sliderRef = useRef(null);
             <div className="text-lg font-bold">{house.price}</div>
             <div className="text-lg font-bold">{house.type}</div>
 
-            <div className="flex justify-center items-center gap-4 mt-1 opacity-80 text-sm">
-                <div className="flex items-center gap-1">
-                <BedDouble className="w-6 h-6" />
-                {house.bedrooms}
-                </div>
-                <div className="flex items-center gap-1">
-                <Bath className="w-6 h-6" />
-                {house.bathrooms}
-                </div>
-            </div>
+<div className="flex justify-center items-center gap-4 mt-1 text-white text-sm font-semibold">
+  <div className="flex items-center gap-1">
+    <BedDouble className="w-6 h-6 text-white" />
+    {house.bedrooms}
+  </div>
+  <div className="flex items-center gap-1">
+    <Bath className="w-6 h-6 text-white" />
+    {house.bathrooms}
+  </div>
+</div>
+
             </div>
 
                     <div className="flex flex-col items-center gap-4 opacity-90 text-3xl">
