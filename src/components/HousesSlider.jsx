@@ -5,6 +5,9 @@ import { IoMdClose } from "react-icons/io";
 import MapView from "./MapView";
 import RealtorView from "./RealtorView";
 import { Link } from "react-router-dom";
+import { BedDouble, Bath } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRef } from "react";
 
 const houses = [
   {
@@ -114,6 +117,7 @@ export default function HousesSlider() {
   const [view, setView] = useState("feed");
   const [showFilter, setShowFilter] = useState(false);
   const [buyOrRent, setBuyOrRent] = useState("Buy"); // <-- Toggle state
+const sliderRef = useRef(null);
 
   const selectHouse = (house) => {
     setSelectedHouse(house);
@@ -302,7 +306,7 @@ export default function HousesSlider() {
             {selectedHouse.street}, {selectedHouse.city}, {selectedHouse.province} {selectedHouse.postalCode}
           </h2>
         
-          <div className="mb-6 overflow-x-auto whitespace-nowrap space-x-4 flex scrollbar-thin scrollbar-thumb-gray-700">
+          {/* <div className="mb-6 overflow-x-auto whitespace-nowrap space-x-4 flex scrollbar-thin scrollbar-thumb-gray-700">
             {selectedHouse.images.map((img, idx) => (
               <img
                 key={idx}
@@ -311,7 +315,43 @@ export default function HousesSlider() {
                 className="h-[100] w-auto rounded inline-block"
               />
             ))}
-          </div>
+          </div> */}
+          <div className="relative mb-6">
+  {/* Left Arrow */}
+  <button
+    className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 bg-black bg-opacity-40 rounded-full hover:bg-opacity-60"
+    onClick={() => {
+      sliderRef.current.scrollBy({ left: -200, behavior: "smooth" });
+    }}
+  >
+    <ChevronLeft className="text-white" />
+  </button>
+
+  {/* Image Scroll Container */}
+  <div
+    ref={sliderRef}
+    className="overflow-x-auto whitespace-nowrap space-x-4 flex scrollbar-thin scrollbar-thumb-gray-700 px-8"
+  >
+    {selectedHouse.images.map((img, idx) => (
+      <img
+        key={idx}
+        src={img}
+        alt={`House image ${idx + 1}`}
+        className="h-[100px] w-auto rounded inline-block"
+      />
+    ))}
+  </div>
+
+  {/* Right Arrow */}
+  <button
+    className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-2 bg-black bg-opacity-40 rounded-full hover:bg-opacity-60"
+    onClick={() => {
+      sliderRef.current.scrollBy({ left: 200, behavior: "smooth" });
+    }}
+  >
+    <ChevronRight className="text-white" />
+  </button>
+</div>
 
 <p className="mb-4 italic">{selectedHouse.description}</p>
 
@@ -411,10 +451,22 @@ export default function HousesSlider() {
                     className="w-10 h-10 rounded-full object-cover cursor-pointer"
                 />
                 </Link>
-                <div className="text-center">
-                  <div className="text-l font-bold">{house.price}</div>
-                  <div className="opacity-80">{house.type}</div>
+            <div className="text-center">
+            <div className="text-lg font-bold">{house.price}</div>
+            <div className="text-lg font-bold">{house.type}</div>
+
+            <div className="flex justify-center items-center gap-4 mt-1 opacity-80 text-sm">
+                <div className="flex items-center gap-1">
+                <BedDouble className="w-6 h-6" />
+                {house.bedrooms}
                 </div>
+                <div className="flex items-center gap-1">
+                <Bath className="w-6 h-6" />
+                {house.bathrooms}
+                </div>
+            </div>
+            </div>
+
                     <div className="flex flex-col items-center gap-4 opacity-90 text-3xl">
                     <div className="flex items-center gap-2">
                         <FaHeart /> <span className="text-base">{house.realtor.likes}</span>
