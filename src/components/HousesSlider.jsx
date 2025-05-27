@@ -26,6 +26,7 @@ const houses = [
     type: "Detached",
     price: "$1,250,000",
     listingDate: "2025-05-01",
+
     realtor: {
       name: "Faezeh Farokhian",
       phone: "647-898-1224",
@@ -124,17 +125,18 @@ const [priceRange, setPriceRange] = useState([100000, 1000000]);
 const [areaRange, setAreaRange] = useState([500, 5000]);
 const [yearBuiltRange, setYearBuiltRange] = useState([1950, 2025]);
 const [showMenu, setShowMenu] = useState(false);
-
-  const selectHouse = (house) => {
-    setSelectedHouse(house);
-  };
+const [likedHouses, setLikedHouses] = useState({});
+  const selectHouse = (house) => { setSelectedHouse(house); };
+const toggleLike = (houseId) => {
+  setLikedHouses((prev) => ({
+    ...prev,
+    [houseId]: !prev[houseId],
+  }));
+};
 
 
   return (
      <div className="relative h-screen w-screen overflow-hidden bg-black text-white">
-
-
-
 
  {/* Tab Bar + Toggle */}
 {!selectedHouse && (
@@ -536,27 +538,43 @@ const [showMenu, setShowMenu] = useState(false);
             <div className="text-lg font-bold">{house.price}</div>
             <div className="text-lg font-bold">{house.type}</div>
 
-<div className="flex justify-center items-center gap-4 mt-1 text-white text-sm font-semibold">
-  <div className="flex items-center gap-1">
-    <BedDouble className="w-6 h-6 text-white" />
-    {house.bedrooms}
-  </div>
-  <div className="flex items-center gap-1">
-    <Bath className="w-6 h-6 text-white" />
-    {house.bathrooms}
-  </div>
-</div>
+
+
+        <div className="flex justify-center items-center gap-4 mt-1 text-white text-sm font-semibold">
+          <div className="flex items-center gap-1">
+            <BedDouble className="w-6 h-6 text-white" />
+            {house.bedrooms}
+          </div>
+          <div className="flex items-center gap-1">
+            <Bath className="w-6 h-6 text-white" />
+            {house.bathrooms}
+          </div>
+        </div>
 
             </div>
 
-                    <div className="flex flex-col items-center gap-4 opacity-90 text-3xl">
-                    <div className="flex items-center gap-2">
-                        <FaHeart /> <span className="text-base">{house.realtor.likes}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <FaComment /> <span className="text-base">{house.realtor.comments}</span>
-                    </div>
-                    </div>
+<div className="flex flex-col items-center gap-4 opacity-90 text-3xl">
+  <div className="flex items-center gap-2">
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        toggleLike(house.id);
+      }}
+      className="focus:outline-none"
+    >
+      <FaHeart
+        className={`transition ${
+          likedHouses[house.id] ? "text-red-500" : "text-white"
+        }`}
+      />
+    </button>
+    <span className="text-base">{house.realtor.likes}</span>
+  </div>
+  <div className="flex items-center gap-2">
+    <FaComment className="text-white" />
+    <span className="text-base">{house.realtor.comments}</span>
+  </div>
+</div>
               </div>
 
               {/* <div className="absolute left-5 bottom-24 text-white max-w-xs bg-black bg-opacity-30 rounded p-3">

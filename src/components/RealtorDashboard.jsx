@@ -71,12 +71,13 @@ export default function RealtorDashboard() {
             <table className="w-full text-left text-sm">
               <thead className="bg-gray-800 text-white">
                 <tr>
-                  <th className="px-4 py-2">Address</th>
+                   <th className="px-4 py-2">Edit</th>
+                  <th className="px-4 py-2">Archive</th>
+                   <th className="px-4 py-2">Address</th>
                   <th className="px-4 py-2">Views</th>
                   <th className="px-4 py-2">Clicks</th>
                   <th className="px-4 py-2">Comments</th>
-                  <th className="px-4 py-2">Edit</th>
-                  <th className="px-4 py-2">Archive</th>
+
                 </tr>
               </thead>
               <tbody>
@@ -104,11 +105,7 @@ export default function RealtorDashboard() {
                     key={idx}
                     className={idx % 2 === 0 ? "bg-gray-900" : "bg-gray-800"}
                   >
-                    <td className="px-4 py-2">{listing.address}</td>
-                    <td className="px-4 py-2">{listing.views}</td>
-                    <td className="px-4 py-2">{listing.clicks}</td>
-                    <td className="px-4 py-2">{listing.comments}</td>
-                    <td className="px-4 py-2">
+                                       <td className="px-4 py-2">
                       <button className="text-blue-400 hover:text-blue-600">
                         <FaEdit />
                       </button>
@@ -118,6 +115,11 @@ export default function RealtorDashboard() {
                         <FaArchive />
                       </button>
                     </td>
+                    <td className="px-4 py-2">{listing.address}</td>
+                    <td className="px-4 py-2">{listing.views}</td>
+                    <td className="px-4 py-2">{listing.clicks}</td>
+                    <td className="px-4 py-2">{listing.comments}</td>
+ 
                   </tr>
                 ))}
               </tbody>
