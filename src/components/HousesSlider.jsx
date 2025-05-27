@@ -3,11 +3,12 @@ import { FaHeart, FaComment } from "react-icons/fa";
 import { FiSliders } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import MapView from "./MapView";
-import RealtorView from "./RealtorView";
 import { Link } from "react-router-dom";
 import { BedDouble, Bath } from "lucide-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef } from "react";
+import ReactSlider from 'react-slider';
+import './slider.css'; // import the slider styles
 
 const houses = [
   {
@@ -119,7 +120,10 @@ export default function HousesSlider() {
   const [buyOrRent, setBuyOrRent] = useState("Buy"); // <-- Toggle state
     const sliderRef = useRef(null);
   const [popupImage, setPopupImage] = useState(null);
-
+const [priceRange, setPriceRange] = useState([100000, 1000000]);
+const [areaRange, setAreaRange] = useState([500, 5000]);
+const [yearBuiltRange, setYearBuiltRange] = useState([1950, 2025]);
+const [showMenu, setShowMenu] = useState(false);
 
   const selectHouse = (house) => {
     setSelectedHouse(house);
@@ -128,6 +132,10 @@ export default function HousesSlider() {
 
   return (
      <div className="relative h-screen w-screen overflow-hidden bg-black text-white">
+
+
+
+
  {/* Tab Bar + Toggle */}
 {!selectedHouse && (
   <div className="absolute top-0 left-0 right-0 z-50 flex justify-center py-4 bg-black bg-opacity-30 text-white text-lg font-semibold">
@@ -179,7 +187,37 @@ export default function HousesSlider() {
   </div>
 )}
 
+      {/* Menu Icon */}
+      {view === "feed" && !selectedHouse && (
+<div className="absolute top-4 left-4 z-50">
+  <button onClick={() => setShowMenu(true)} className="text-white text-3xl focus:outline-none">
+    ☰
+  </button>
+</div>
+)}
 
+{/* Slide-out Menu */}
+{view === "feed" && !selectedHouse && showMenu && (
+  <div className="fixed top-0 left-0 h-full w-64 bg-gray-900 text-white z-50 shadow-lg p-6 transition-transform">
+    <button
+      onClick={() => setShowMenu(false)}
+      className="absolute top-4 right-4 text-white text-2xl"
+    >
+      ×
+    </button>
+    {/* <h2 className="text-2xl font-bold mb-6">Menu</h2> */}
+    <ul className="space-y-4 text-lg">
+<Link
+  to="/realtor-dashboard"
+  onClick={() => setShowMenu(false)}
+  className="block w-full text-left px-4 py-3 hover:bg-gray-700"
+>
+  Realtors
+</Link>
+
+    </ul>
+  </div>
+)}
 
 {/* Filter Overlay */}
 {showFilter && (
@@ -198,95 +236,128 @@ export default function HousesSlider() {
         </button>
       </div>
 
-      {/* Bedrooms */}
-      <div className="mb-4">
-        <label htmlFor="bedrooms" className="block mb-1 font-medium">
-          Bedrooms
-        </label>
-        <select
-          id="bedrooms"
-          className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white"
-        >
-          <option value="">Any</option>
-          <option value="1">1+</option>
-          <option value="2">2+</option>
-          <option value="3">3+</option>
-          <option value="4">4+</option>
-        </select>
-      </div>
-
-      {/* Bathrooms */}
-      <div className="mb-4">
-        <label htmlFor="bathrooms" className="block mb-1 font-medium">
-          Bathrooms
-        </label>
-        <select
-          id="bathrooms"
-          className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white"
-        >
-          <option value="">Any</option>
-          <option value="1">1+</option>
-          <option value="2">2+</option>
-          <option value="3">3+</option>
-          <option value="4">4+</option>
-        </select>
+      {/* Bedrooms and Bathrooms */}
+      <div className="mb-4 flex space-x-2">
+        <div className="flex-1">
+          <label htmlFor="bedrooms" className="block mb-1 font-medium">
+            Bedrooms
+          </label>
+          <select
+            id="bedrooms"
+            className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white"
+          >
+            <option value="">Any</option>
+            <option value="1">1+</option>
+            <option value="2">2+</option>
+            <option value="3">3+</option>
+            <option value="4">4+</option>
+          </select>
+        </div>
+        <div className="flex-1">
+          <label htmlFor="bathrooms" className="block mb-1 font-medium">
+            Bathrooms
+          </label>
+          <select
+            id="bathrooms"
+            className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white"
+          >
+            <option value="">Any</option>
+            <option value="1">1+</option>
+            <option value="2">2+</option>
+            <option value="3">3+</option>
+            <option value="4">4+</option>
+          </select>
+        </div>
       </div>
 
       {/* Price Min / Max */}
+<div className="mb-4">
+  <label className="block mb-1 font-medium">Price Range (${priceRange[0].toLocaleString()} - ${priceRange[1].toLocaleString()})</label>
+  <ReactSlider
+    className="slider"
+    thumbClassName="thumb"
+    trackClassName="track"
+    min={0}
+    max={2000000}
+    step={10000}
+    value={priceRange}
+    onChange={(value) => setPriceRange(value)}
+    withTracks={true}
+    pearling
+    minDistance={50000}
+  />
+</div>
+
+
+      {/* Area (sqft) Min / Max */}
+ <div className="mb-4">
+  <label className="block mb-1 font-medium">Area (sqft): {areaRange[0]} - {areaRange[1]}</label>
+  <ReactSlider
+    className="slider"
+    thumbClassName="thumb"
+    trackClassName="track"
+    min={0}
+    max={10000}
+    step={100}
+    value={areaRange}
+    onChange={(value) => setAreaRange(value)}
+    withTracks={true}
+    pearling
+    minDistance={100}
+  />
+</div>
+
+
+      {/* Year Built Min / Max */}
+ <div className="mb-4">
+  <label className="block mb-1 font-medium">Year Built: {yearBuiltRange[0]} - {yearBuiltRange[1]}</label>
+  <ReactSlider
+    className="slider"
+    thumbClassName="thumb"
+    trackClassName="track"
+    min={1800}
+    max={2025}
+    step={1}
+    value={yearBuiltRange}
+    onChange={(value) => setYearBuiltRange(value)}
+    withTracks={true}
+    pearling
+    minDistance={1}
+  />
+</div>
+
+
+      {/* City and House Type */}
       <div className="mb-4 flex space-x-2">
-        <div className="flex-1">
-          <label htmlFor="priceMin" className="block mb-1 font-medium">
-            Price Min
-          </label>
-          <input
-            type="number"
-            id="priceMin"
-            min="0"
-            placeholder="0"
-            className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white"
-          />
-        </div>
-        <div className="flex-1">
-          <label htmlFor="priceMax" className="block mb-1 font-medium">
-            Price Max
-          </label>
-          <input
-            type="number"
-            id="priceMax"
-            min="0"
-            placeholder="1,000,000"
-            className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white"
-          />
-        </div>
-      </div>
+ <div className="flex-1">
+  <label htmlFor="city" className="block mb-1 font-medium">
+    City
+  </label>
+  <select
+    id="city"
+    className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white"
+  >
+    <option value="">Any</option>
+    <option value="Richmond Hill">Richmond Hill</option>
+    <option value="Toronto">Toronto</option>
+    <option value="Oakville">Oakville</option>
+  </select>
+</div>
 
-      {/* City */}
-      <div className="mb-4">
-        <label htmlFor="city" className="block mb-1 font-medium">
-          City
-        </label>
-        <input
-          type="text"
-          id="city"
-          placeholder="Enter city"
-          className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white"
-        />
-      </div>
-
-      {/* House Type */}
-      <div className="mb-4">
-        <label htmlFor="houseType" className="block mb-1 font-medium">
-          House Type
-        </label>
-        <select
-          id="houseType"
-          className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white"
-        >
-          <option value="">Any</option>
-          <option value="detached">Detached</option>
-          <option value="townhome">Townhome</option>
-          <option value="condo">Condo</option>
-        </select>
+        <div className="flex-1">
+          <label htmlFor="houseType" className="block mb-1 font-medium">
+            House Type
+          </label>
+          <select
+            id="houseType"
+            className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white"
+          >
+            <option value="">Any</option>
+            <option value="detached">Detached</option>
+            <option value="townhome">Townhome</option>
+            <option value="condo">Condo</option>
+          </select>
+        </div>
       </div>
 
       {/* Apply Filters Button */}
@@ -299,6 +370,8 @@ export default function HousesSlider() {
     </div>
   </div>
 )}
+
+
 
 
       {/* Detail View */}

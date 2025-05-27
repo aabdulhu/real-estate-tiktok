@@ -1,0 +1,25 @@
+/* slider.css */
+.slider {
+  height: 30px;
+  margin-top: 10px;
+}
+
+.thumb {
+  height: 20px;
+  width: 20px;
+  background-color: #3b82f6; /* Blue-500 */
+  border-radius: 50%;
+  cursor: grab;
+  border: 2px solid white;
+  margin-top: -8px;
+}
+
+.track {
+  height: 4px;
+  top: 13px;
+  background: #6b7280; /* Gray-500 */
+}
+
+.track.track-1 {
+  background: #3b82f6; /* Blue-500 */
+}
